@@ -15,9 +15,9 @@
     },
     {
       "type": "table",
-      "name": "inTable",
-      "tableName": "person",
-      "connection": "",
+      "name": "presenceTable",
+      "tableName": "anzepresence",
+      "connection": "anzepresence_STORAGE",
       "direction": "in"
     }
   ],
