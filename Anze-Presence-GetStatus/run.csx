@@ -30,12 +30,13 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     var table = tableClient.GetTableReference("anzepresence"); // TODO: move to config
 
     var query = new TableQuery<Presence>()
-                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, app));
+                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, app))
+                    .Take(1);
 
-    var potentialPresence = table.ExecuteQuery(query).Take(1);
+    var potentialPresence = table.ExecuteQuery(query).SingleOrDefault();
 
-    return app == null
-        ? req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name on the query string or in the request body")
+    return potentialPresence == null
+        ? req.CreateResponse(HttpStatusCode.BadRequest, "Status unknown.")
         : req.CreateResponse(HttpStatusCode.OK, "Hello " + app + ", looks like you're " + potentialPresence.Status);
 }
 
