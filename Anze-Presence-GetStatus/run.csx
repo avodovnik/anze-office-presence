@@ -36,7 +36,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     return app == null
         ? req.CreateResponse(HttpStatusCode.BadRequest, "Please pass a name on the query string or in the request body")
-        : req.CreateResponse(HttpStatusCode.OK, "Hello " + app);
+        : req.CreateResponse(HttpStatusCode.OK, "Hello " + app + ", looks like you're " + potentialPresence.Status);
 }
 
 public class Presence : TableEntity
