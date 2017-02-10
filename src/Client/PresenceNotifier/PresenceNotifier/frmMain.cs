@@ -91,22 +91,40 @@ namespace PresenceNotifier
             // check to see if client is signed-in
             if (_lyncClient.State != ClientState.SignedIn)
             {
-                NotifyAvailability("Offline");
+                NotifyAvailability(ContactAvailability.Offline);
                 // this is important, because if the user signs out, we actually get notified, then die
                 return;
             }
 
-            var availability = ((ContactAvailability)_lyncClient.Self.Contact.GetContactInformation(ContactInformationType.Availability))
-                                .ToString();
+            var availability = (ContactAvailability)_lyncClient.Self.Contact.GetContactInformation(ContactInformationType.Availability);
             NotifyAvailability(availability);
         }
 
-        private void NotifyAvailability(string presence)
+        private void NotifyAvailability(ContactAvailability presence)
         {
             // yay cross-thread!
             var renderUpdatedPresence = new Action(() =>
             {
-                this.lblCurrentStatus.Text = presence;
+                this.lblCurrentStatus.Text = presence.ToString();
+
+                switch(presence)
+                {
+                    case ContactAvailability.Offline:
+                        this.lblCurrentStatus.ForeColor = System.Drawing.Color.DarkGray;
+                        break;
+                    case ContactAvailability.Free:
+                        this.lblCurrentStatus.ForeColor = System.Drawing.Color.Green;
+                        break;
+                    case ContactAvailability.Away:
+                        this.lblCurrentStatus.ForeColor = System.Drawing.Color.Orange;
+                        break;
+                    case ContactAvailability.Busy:
+                        this.lblCurrentStatus.ForeColor = System.Drawing.Color.Red;
+                        break;
+                    default:
+                        this.lblCurrentStatus.ForeColor = System.Drawing.Color.Black;
+                        break;
+                }
             });
 
             if (this.InvokeRequired)
