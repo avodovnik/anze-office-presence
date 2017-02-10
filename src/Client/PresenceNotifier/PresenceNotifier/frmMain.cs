@@ -1,6 +1,9 @@
 ﻿using Microsoft.Lync.Model;
+using Newtonsoft.Json;
 using System;
 using System.Configuration;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PresenceNotifier
@@ -107,7 +110,7 @@ namespace PresenceNotifier
             {
                 this.lblCurrentStatus.Text = presence.ToString();
 
-                switch(presence)
+                switch (presence)
                 {
                     case ContactAvailability.Offline:
                         this.lblCurrentStatus.ForeColor = System.Drawing.Color.DarkGray;
@@ -131,12 +134,40 @@ namespace PresenceNotifier
             if (this.InvokeRequired)
             {
                 this.Invoke(renderUpdatedPresence);
-            } else
+            }
+            else
             {
                 renderUpdatedPresence();
             }
 
-            // notify the endpoint
+
+            // do the notification
+            using (var httpClient = new HttpClient())
+            {
+                var payload = JsonConvert.SerializeObject(new Presence(presence));
+                var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
+
+                // notify the endpoint
+                Task.Run(async () =>
+                {
+                    var result = await httpClient.PostAsync(_endpoint, content);
+
+                    if (!result.IsSuccessStatusCode)
+                    {
+                        notifyIcon.ShowBalloonTip(2000, Application.ProductName, 
+                            "There was a problem communicating with the endpoint you specified.", ToolTipIcon.Error);
+                    }
+                }).Wait();
+            }
+        }
+
+        private class Presence
+        {
+            public Presence(ContactAvailability presence)
+            {
+                this.status = presence.ToString();
+            }
+            public string status { get; set; }
         }
     }
 }
