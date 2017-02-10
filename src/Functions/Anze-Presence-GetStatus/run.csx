@@ -27,7 +27,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
     // Create the table client.
     var tableClient = storageAccount.CreateCloudTableClient();
 
-    var table = tableClient.GetTableReference("anzepresence"); // TODO: move to config
+    var table = tableClient.GetTableReference(ConfigurationManager.AppSettings["PresenceTable"]); 
 
     var query = new TableQuery<Presence>()
                     .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, app))
@@ -37,7 +37,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     return potentialPresence == null
         ? req.CreateResponse(HttpStatusCode.BadRequest, "Status unknown.")
-        : req.CreateResponse(HttpStatusCode.OK, "Hello " + app + ", looks like you're " + potentialPresence.Status);
+        : req.CreateResponse(HttpStatusCode.OK, potentialPresence.Status);
 }
 
 public class Presence : TableEntity
