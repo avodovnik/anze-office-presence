@@ -118,6 +118,7 @@ namespace PresenceNotifier
                     case ContactAvailability.Away:
                         this.lblCurrentStatus.ForeColor = System.Drawing.Color.Orange;
                         break;
+                    case ContactAvailability.DoNotDisturb:
                     case ContactAvailability.Busy:
                         this.lblCurrentStatus.ForeColor = System.Drawing.Color.Red;
                         break;
