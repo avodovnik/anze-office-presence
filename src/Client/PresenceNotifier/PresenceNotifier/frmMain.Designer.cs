@@ -35,7 +35,6 @@
             this.ctxMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txtEndpoint = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblCurrentStatus = new System.Windows.Forms.Label();
             this.ctxMenu.SuspendLayout();
@@ -81,18 +80,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEndpoint.Location = new System.Drawing.Point(191, 9);
             this.txtEndpoint.Name = "txtEndpoint";
-            this.txtEndpoint.Size = new System.Drawing.Size(311, 22);
+            this.txtEndpoint.ReadOnly = true;
+            this.txtEndpoint.Size = new System.Drawing.Size(401, 22);
             this.txtEndpoint.TabIndex = 2;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(508, 7);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(84, 26);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Save";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -120,7 +110,6 @@
             this.ClientSize = new System.Drawing.Size(604, 81);
             this.Controls.Add(this.lblCurrentStatus);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.txtEndpoint);
             this.Controls.Add(this.lblNothingness);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -144,7 +133,6 @@
         private System.Windows.Forms.ContextMenuStrip ctxMenu;
         private System.Windows.Forms.ToolStripMenuItem cExitMenuItem;
         private System.Windows.Forms.TextBox txtEndpoint;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblCurrentStatus;
     }
